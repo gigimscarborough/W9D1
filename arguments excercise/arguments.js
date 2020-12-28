@@ -37,25 +37,60 @@ Function.prototype.mybind = function(context, ...bindArgs){
     }
 }
 
-class Cat {
-    constructor(name) {
-        this.name = name;
-    }
+// class Cat {
+//     constructor(name) {
+//         this.name = name;
+//     }
 
-    says(sound, person) {
-        debugger
-        console.log(`${this.name} says ${sound} to ${person}!`);
-        return true;
-    }
-}
+//     says(sound, person) {
+//         debugger
+//         console.log(`${this.name} says ${sound} to ${person}!`);
+//         return true;
+//     }
+// }
 
-class Dog {
-    constructor(name) {
-        this.name = name;
-    }
-}
-const markov = new Cat("Markov");
-const pavlov = new Dog("Pavlov");
+// class Dog {
+//     constructor(name) {
+//         this.name = name;
+//     }
+// }
+// const markov = new Cat("Markov");
+// const pavlov = new Dog("Pavlov");
 
-// markov.says.myBind(pavlov, "meow", "Kush")
-const distnctFunc = markov.says;
+// // markov.says.myBind(pavlov, "meow", "Kush")
+// const distnctFunc = markov.says;
+
+
+function curriedSum(numArgs) {
+    let numbers = [];
+    let func = this;
+
+   return function _curriedSum(num){
+        numbers.push(num);
+
+        if(numbers.length === numArgs){
+            return numbers.reduce(function(acc,ele){
+                    return acc + ele
+                })
+        } else {
+            return _curriedSum;
+        };
+    };
+};
+
+Function.prototype.curry = function(numArgs){
+    let nums = [];
+    let func = this;
+    return function _myCurry(ele){
+        nums.push(ele)
+        if(nums.length < numArgs){
+            return _myCurry;
+        } else {
+            return func(...nums);
+        }
+    };
+};
+
+
+
+
