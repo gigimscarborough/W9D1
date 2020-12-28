@@ -19,12 +19,43 @@ function sum1(){
     }
     return total;
 }
-
-Function.prototype.mybind = function(context, ...bindArgs){
-    let that = this
-    
-    return function(...callArgs){
-        that.apply(context, bindArgs.concat(callArgs))
+Function.prototype.myBind = function(context){
+    let that = this;
+    let bindArgs = Array.from(arguments).slice(1);
+    return function() {
+        let callArgs = Array.from(arguments);
+        return that.apply(context, bindArgs.concat(callArgs));
     }
 }
 
+Function.prototype.mybind = function(context, ...bindArgs){
+    let that = this;
+
+    return function(...callArgs){
+
+        return that.apply(context, bindArgs.concat(callArgs));
+    }
+}
+
+class Cat {
+    constructor(name) {
+        this.name = name;
+    }
+
+    says(sound, person) {
+        debugger
+        console.log(`${this.name} says ${sound} to ${person}!`);
+        return true;
+    }
+}
+
+class Dog {
+    constructor(name) {
+        this.name = name;
+    }
+}
+const markov = new Cat("Markov");
+const pavlov = new Dog("Pavlov");
+
+// markov.says.myBind(pavlov, "meow", "Kush")
+const distnctFunc = markov.says;
